@@ -39,4 +39,4 @@ if __name__ == '__main__':
     observer.schedule(event_handler, path=IMAGE_FOLDER)
     observer.start()
     app.jinja_env.globals['images'] = []
-    app.run(debug=False, port=8000)
+    app.run(debug=False, host='0.0.0.0', port=8000)
