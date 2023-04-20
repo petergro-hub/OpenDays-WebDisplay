@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Image Viewer</title>
+</head>
+<body style="background-color:black;">
+    <div id="image-container">
+        {% for image in images %}
+        <img src="{{ url_for('get_image', filename=image) }}" style="display:none">
+        {% endfor %}
+    </div>
+    <script>
+        var images = document.querySelectorAll('#image-container img');
+        var index = 0;
+        setInterval(function() {
+            images[index].style.display = 'none';
+            index = (index + 1) % images.length;
+            images[index].style.display = 'block';
+        }, 10000);
+    </script>
+</body>
+</html>
