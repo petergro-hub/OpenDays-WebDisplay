@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Image Viewer</title>
+<style>
+  body, html {
+    height: 100%;
+    margin: 0;
+  }
+
+  .bg {
+    background-color: black;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  img {
+    max-width: 80%;
+    max-height: 80%;
+    object-fit: contain;
+  }
+</style>
+</head>
+<body>
+
+<div class="bg">
+  <img id="displayedImage" src="" alt="Image Viewer">
+</div>
+
+<script>
+let currentImageName = "";
+
+function fetchLatestImage() {
+  fetch('/latest-image')
+    .then(response => response.json())
+    .then(data => {
+      if (data.image !== currentImageName) {
+        currentImageName = data.image;
+        const imageElement = document.getElementById('displayedImage');
+        imageElement.src = '/image/' + currentImageName;
+      }
+    })
+    .catch(error => {
+      console.error('Error fetching the latest image:', error);
+    });
+}
+
+// Fetch and update the image immediately, then set an interval for fetching
+fetchLatestImage();
+setInterval(fetchLatestImage, 5000); // Check for the latest image every 5 seconds
+</script>
+</body>
+</html>
