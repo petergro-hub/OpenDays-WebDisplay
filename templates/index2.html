@@ -31,31 +31,39 @@
 </div>
 
 <script>
-let currentImageIndex = 0;
+let currentImageIndex = -1; // Start before the first image index
 let images = [];
 
 function fetchImages() {
   fetch('/images')
     .then(response => response.json())
     .then(data => {
-      images = data.images;
-      if (!images.length) {
-        setTimeout(fetchImages, 5000);
+      // Check if the new list of images is different from the current one
+      if (JSON.stringify(data.images) !== JSON.stringify(images)) {
+        images = data.images;
+        // If new images are found, reset the index to start at the first new image
+        currentImageIndex = 0;
       }
+    })
+    .catch(error => {
+      console.error('Error fetching images:', error);
     });
 }
 
 function updateImage() {
-  const imageElement = document.getElementById('displayedImage');
   if (images.length > 0) {
-    imageElement.src = '/image/' + images[currentImageIndex];
+    // Move to the next image, or loop back to the first one
     currentImageIndex = (currentImageIndex + 1) % images.length;
+    const imageElement = document.getElementById('displayedImage');
+    imageElement.src = '/image/' + images[currentImageIndex];
   }
-  setTimeout(updateImage, 5000); // Set to cycle every 5 seconds
 }
 
+// Fetch and update the image immediately, then set intervals for fetching and updating
 fetchImages();
-updateImage(); // Start the image update loop
+updateImage();
+setInterval(fetchImages, 5000); // Check for new images every 5 seconds
+setInterval(updateImage, 5000); // Change images every 5 seconds
 </script>
 
 </body>
