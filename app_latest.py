@@ -4,7 +4,7 @@ from werkzeug.utils import secure_filename
 import time
 
 app = Flask(__name__)
-image_folder = '/path/to/your/image/folder'
+image_folder = '/home/ivrl/Fooocus/outputs'
 latest_image = None
 
 def get_latest_image():
@@ -17,7 +17,7 @@ def get_latest_image():
 
 @app.route('/')
 def index():
-    return send_from_directory('templates', 'index.html')
+    return send_from_directory('templates', 'index_latest.html')
 
 @app.route('/latest-image')
 def latest_image():
